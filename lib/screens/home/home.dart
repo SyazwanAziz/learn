@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
           builder: (context) {
             return Container(
               color: Colors.red[300],
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 60.0),
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: AccUpd(),
             );
           });

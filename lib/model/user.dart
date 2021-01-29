@@ -9,6 +9,7 @@ class UserData {
   String name;
   String phoneNum;
   String address;
+  String location;
 
-  UserData({this.uid, this.name, this.phoneNum, this.address});
+  UserData({this.uid, this.name, this.phoneNum, this.address, this.location});
 }

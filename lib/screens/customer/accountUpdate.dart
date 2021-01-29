@@ -4,6 +4,7 @@ import 'package:learn/model/user.dart';
 import 'package:learn/services/database.dart';
 import 'package:learn/shared/loading.dart';
 import 'package:learn/shared/constants.dart';
+import 'package:geolocator/geolocator.dart';
 
 class AccUpd extends StatefulWidget {
   @override
@@ -16,7 +17,18 @@ class _AccUpdState extends State<AccUpd> {
 
   String _name;
   String _phoneNum;
-  String _location;
+  String _address;
+  String _location = 'Location';
+
+  void _getCurrentLocation() async {
+    final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print(position);
+
+    setState(() {
+      _location = "${position.latitude}, ${position.longitude}";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +45,7 @@ class _AccUpdState extends State<AccUpd> {
                     backgroundColor: Colors.red[300],
                     body: Container(
                         padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 50.0),
+                            vertical: 20.0, horizontal: 10.0),
                         child: Form(
                           child: Column(
                             children: <Widget>[
@@ -57,11 +69,24 @@ class _AccUpdState extends State<AccUpd> {
                               SizedBox(height: 20.0),
                               TextFormField(
                                 decoration: textInputDecoration.copyWith(
-                                    hintText: 'Address/Shop Adress'),
+                                  hintText: 'Address/Shop Address',
+                                ),
                                 validator: (val) =>
                                     val.isEmpty ? 'Please enter a name' : null,
                                 onChanged: (val) =>
-                                    setState(() => _location = val),
+                                    setState(() => _address = val),
+                              ),
+                              SizedBox(height: 20.0),
+                              TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                  hintText: _location,
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      _getCurrentLocation();
+                                    },
+                                    icon: Icon(Icons.location_searching),
+                                  ),
+                                ),
                               ),
                               SizedBox(height: 20.0),
                               RaisedButton(
@@ -79,7 +104,8 @@ class _AccUpdState extends State<AccUpd> {
                                         .updateUserData(
                                       _name ?? userData.name,
                                       _phoneNum ?? userData.phoneNum,
-                                      _location ?? userData.address,
+                                      _address ?? userData.address,
+                                      _location ?? userData.location,
                                     );
                                     Navigator.pop(context);
                                   }

@@ -3,5 +3,5 @@ class UpdAcc {
   final String phoneNum;
   final String address;
 
-  UpdAcc({this.name, this.phoneNum, this.address});
+  UpdAcc({this.name, this.phoneNum, this.address, location});
 }
