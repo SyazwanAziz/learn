@@ -2,6 +2,7 @@ import 'package:learn/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn/shared/constants.dart';
 import 'package:learn/shared/loading.dart';
+import 'package:local_auth/local_auth.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -15,6 +16,7 @@ class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+  final LocalAuthentication localAuth = LocalAuthentication();
 
   //text field state
   String email = '';
@@ -83,6 +85,7 @@ class _SignInState extends State<SignIn> {
                             }
                           }
                         }),
+                    SizedBox(height: 20.0),
                     Container(
                       child: InkWell(
                           child: new Text('Click here to SIGN UP'),

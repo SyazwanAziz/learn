@@ -18,7 +18,7 @@ class _AccUpdState extends State<AccUpd> {
   String _name;
   String _phoneNum;
   String _address;
-  String _location = 'Location';
+  String _location;
 
   void _getCurrentLocation() async {
     final position = await Geolocator.getCurrentPosition(
@@ -51,35 +51,36 @@ class _AccUpdState extends State<AccUpd> {
                             children: <Widget>[
                               SizedBox(height: 20.0),
                               TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'Name/Shop Name'),
+                                initialValue: userData.name,
+                                decoration: textInputDecoration,
                                 validator: (val) =>
                                     val.isEmpty ? 'Please enter a name' : null,
                                 onChanged: (val) => setState(() => _name = val),
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                    hintText: 'Phone Number'),
-                                validator: (val) =>
-                                    val.isEmpty ? 'Please enter a name' : null,
+                                initialValue: userData.phoneNum,
+                                decoration: textInputDecoration,
+                                validator: (val) => val.isEmpty
+                                    ? 'Please enter you phone number'
+                                    : null,
                                 onChanged: (val) =>
                                     setState(() => _phoneNum = val),
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
-                                decoration: textInputDecoration.copyWith(
-                                  hintText: 'Address/Shop Address',
-                                ),
-                                validator: (val) =>
-                                    val.isEmpty ? 'Please enter a name' : null,
+                                initialValue: userData.address,
+                                decoration: textInputDecoration,
+                                validator: (val) => val.isEmpty
+                                    ? 'Please enter your city address'
+                                    : null,
                                 onChanged: (val) =>
                                     setState(() => _address = val),
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
+                                initialValue: userData.location,
                                 decoration: textInputDecoration.copyWith(
-                                  hintText: _location,
                                   suffixIcon: IconButton(
                                     onPressed: () {
                                       _getCurrentLocation();
