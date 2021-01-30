@@ -20,8 +20,8 @@ class DatabaseService {
     });
   }
 
-  //brew list form snapshot
-  List<UpdAcc> _brewListFromSnapshot(QuerySnapshot snapshot) {
+  //user list form snapshot
+  List<UpdAcc> _userListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UpdAcc(
         name: doc.data()['name'] ?? '',
@@ -32,9 +32,9 @@ class DatabaseService {
     }).toList();
   }
 
-  // get brews stream
-  Stream<List<UpdAcc>> get brews {
-    return accountCollection.snapshots().map(_brewListFromSnapshot);
+  // get user stream
+  Stream<List<UpdAcc>> get user {
+    return accountCollection.snapshots().map(_userListFromSnapshot);
   }
 
   Stream<UserData> get userData {

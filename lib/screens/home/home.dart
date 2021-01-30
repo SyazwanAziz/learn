@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
     }
 
     return StreamProvider<List<UpdAcc>>.value(
-        value: DatabaseService().brews,
+        value: DatabaseService().user,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.red,
