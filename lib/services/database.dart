@@ -8,7 +8,7 @@ class DatabaseService {
 
   // collection reference
   final CollectionReference accountCollection =
-      FirebaseFirestore.instance.collection('customer');
+      FirebaseFirestore.instance.collection('User');
 
   Future updateUserData(
       String name, String phoneNum, String address, String location,

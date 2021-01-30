@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn/screens/customer/photo.dart';
 import 'package:provider/provider.dart';
 import 'package:learn/model/user.dart';
 import 'package:learn/services/database.dart';
@@ -56,12 +57,36 @@ class _AccUpdState extends State<AccUpd> {
                 key: _formKey,
                 child: Scaffold(
                     backgroundColor: Colors.red[300],
+                    appBar: AppBar(
+                      title: Text('Update Info'),
+                      backgroundColor: Colors.red,
+                    ),
                     body: Container(
                         padding: EdgeInsets.symmetric(
                             vertical: 20.0, horizontal: 10.0),
                         child: Form(
                           child: Column(
                             children: <Widget>[
+                              SizedBox(height: 20.0),
+                              Stack(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 75.0,
+                                    backgroundImage: null,
+                                  ),
+                                  Positioned(
+                                    bottom: 20.0,
+                                    right: 20.0,
+                                    child: InkWell(
+                                      onTap: () => Photo(),
+                                      child: Icon(
+                                        Icons.camera_alt,
+                                        size: 30.0,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                               SizedBox(height: 20.0),
                               TextFormField(
                                 initialValue: userData.name,

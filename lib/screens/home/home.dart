@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:learn/screens/customer/accountUpdate.dart';
 import 'package:learn/screens/customer/historyCust.dart';
 import 'package:learn/screens/customer/homeCust.dart';
@@ -7,6 +8,7 @@ import 'package:learn/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:learn/model/update.dart';
 import 'package:learn/screens/customer/accCust.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,7 +17,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-
+  String qrCode = 'Unknown';
   List<Widget> _widgetOptions = <Widget>[
     AccountCust(),
     HomeCust(),
@@ -29,21 +31,27 @@ class _HomeState extends State<Home> {
   }
 
   final AuthService _auth = AuthService();
+  Future<void> scanQRCode() async {
+    try {
+      final qrCode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.QR,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        this.qrCode = qrCode;
+      });
+    } on PlatformException {
+      qrCode = 'Failed to get platform version.';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    void _showSettingsPanel() {
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return Container(
-              color: Colors.red[300],
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              child: AccUpd(),
-            );
-          });
-    }
-
     return StreamProvider<List<UpdAcc>>.value(
         value: DatabaseService().user,
         child: Scaffold(
@@ -73,7 +81,7 @@ class _HomeState extends State<Home> {
             ListTile(
               leading: Icon(Icons.qr_code_scanner),
               title: Text('Scan QR Code'),
-              onTap: null,
+              onTap: () => scanQRCode(),
             ),
             ListTile(
               leading: Icon(Icons.logout),
