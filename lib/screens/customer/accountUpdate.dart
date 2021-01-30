@@ -19,6 +19,10 @@ class _AccUpdState extends State<AccUpd> {
   String _phoneNum;
   String _address;
   String _location;
+  double latitude;
+  double longitude;
+
+  var _locationCont = TextEditingController();
 
   void _getCurrentLocation() async {
     final position = await Geolocator.getCurrentPosition(
@@ -26,8 +30,17 @@ class _AccUpdState extends State<AccUpd> {
     print(position);
 
     setState(() {
-      _location = "${position.latitude}, ${position.longitude}";
+      _location = '${position.latitude}, ${position.longitude}';
+      _locationCont.text = _location;
+      latitude = position.latitude;
+      longitude = position.longitude;
     });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    _getCurrentLocation();
   }
 
   @override
@@ -79,7 +92,7 @@ class _AccUpdState extends State<AccUpd> {
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
-                                initialValue: userData.location,
+                                controller: _locationCont,
                                 decoration: textInputDecoration.copyWith(
                                   suffixIcon: IconButton(
                                     onPressed: () {

@@ -12,6 +12,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  String userType;
   int selectedRadio;
   void initState() {
     super.initState();
@@ -101,8 +102,16 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result = await _auth
-                                .registerWithEmailandPassword(email, password);
+
+                            if (selectedRadio == 1) {
+                              userType = "Owner";
+                            } else {
+                              userType = "Customer";
+                            }
+
+                            dynamic result =
+                                await _auth.registerWithEmailandPassword(
+                                    email, password, userType);
                             if (result == null) {
                               setState(() {
                                 error = 'Please supply a valid email';

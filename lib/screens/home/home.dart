@@ -61,7 +61,10 @@ class _HomeState extends State<Home> {
             ListTile(
                 leading: Icon(Icons.edit),
                 title: Text('Edit account info'),
-                onTap: () => _showSettingsPanel()),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AccUpd()));
+                }),
             ListTile(
               leading: Icon(Icons.design_services),
               title: Text('Edit service'),

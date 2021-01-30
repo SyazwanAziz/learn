@@ -11,13 +11,32 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('customer');
 
   Future updateUserData(
-      String name, String phoneNum, String address, String location) async {
-    return await accountCollection.doc(uid).set({
+      String name, String phoneNum, String address, String location,
+      {String userType}) async {
+    var data;
+
+    var x = {
       'name': name,
       'phoneNum': phoneNum,
       'address': address,
       'location': location,
-    });
+      'userType': userType,
+    };
+
+    var y = {
+      'name': name,
+      'phoneNum': phoneNum,
+      'address': address,
+      'location': location,
+    };
+
+    if (userType != null) {
+      data = x;
+    } else {
+      data = y;
+    }
+
+    return await accountCollection.doc(uid).set(data);
   }
 
   //user list form snapshot
