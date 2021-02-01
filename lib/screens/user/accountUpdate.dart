@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:learn/screens/customer/photo.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:learn/model/user.dart';
 import 'package:learn/services/database.dart';
@@ -15,11 +17,13 @@ class AccUpd extends StatefulWidget {
 class _AccUpdState extends State<AccUpd> {
   int selectedRadio;
   final _formKey = GlobalKey<FormState>();
-
+  final ImagePicker _picker = ImagePicker();
+  PickedFile _imageFile;
   String _name;
   String _phoneNum;
   String _address;
   String _location;
+  String _photoURL;
   double latitude;
   double longitude;
 
@@ -42,6 +46,47 @@ class _AccUpdState extends State<AccUpd> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     _getCurrentLocation();
+  }
+
+  Future showChoiceDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Choose source"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: Text("Gallery"),
+                  onTap: () {
+                    takePhoto(ImageSource.gallery);
+                    Navigator.pop(context);
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                GestureDetector(
+                  child: Text("Take new picture"),
+                  onTap: () {
+                    takePhoto(ImageSource.camera);
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFIle = await _picker.getImage(source: source);
+    setState(() {
+      _imageFile = pickedFIle;
+    });
   }
 
   @override
@@ -70,15 +115,23 @@ class _AccUpdState extends State<AccUpd> {
                               SizedBox(height: 20.0),
                               Stack(
                                 children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 75.0,
-                                    backgroundImage: null,
-                                  ),
+                                  new Container(
+                                      width: 175.0,
+                                      height: 175.0,
+                                      decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: _imageFile == null
+                                                  ? NetworkImage(
+                                                      userData.photoURL)
+                                                  : FileImage(
+                                                      File(_imageFile.path))))),
                                   Positioned(
-                                    bottom: 20.0,
-                                    right: 20.0,
+                                    bottom: 0.0,
+                                    right: 0.0,
                                     child: InkWell(
-                                      onTap: () => Photo(),
+                                      onTap: () => showChoiceDialog(),
                                       child: Icon(
                                         Icons.camera_alt,
                                         size: 30.0,
@@ -89,16 +142,16 @@ class _AccUpdState extends State<AccUpd> {
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
-                                initialValue: userData.name,
-                                decoration: textInputDecoration,
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: userData.name),
                                 validator: (val) =>
                                     val.isEmpty ? 'Please enter a name' : null,
                                 onChanged: (val) => setState(() => _name = val),
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
-                                initialValue: userData.phoneNum,
-                                decoration: textInputDecoration,
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: userData.phoneNum),
                                 validator: (val) => val.isEmpty
                                     ? 'Please enter you phone number'
                                     : null,
@@ -107,8 +160,8 @@ class _AccUpdState extends State<AccUpd> {
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
-                                initialValue: userData.address,
-                                decoration: textInputDecoration,
+                                decoration: textInputDecoration.copyWith(
+                                    hintText: userData.address),
                                 validator: (val) => val.isEmpty
                                     ? 'Please enter your city address'
                                     : null,
@@ -141,11 +194,11 @@ class _AccUpdState extends State<AccUpd> {
                                   if (_formKey.currentState.validate()) {
                                     await DatabaseService(uid: user.uid)
                                         .updateUserData(
-                                      _name ?? userData.name,
-                                      _phoneNum ?? userData.phoneNum,
-                                      _address ?? userData.address,
-                                      _location ?? userData.location,
-                                    );
+                                            _name ?? userData.name,
+                                            _phoneNum ?? userData.phoneNum,
+                                            _address ?? userData.address,
+                                            _location ?? userData.location,
+                                            _photoURL ?? userData.photoURL);
                                     Navigator.pop(context);
                                   }
                                 },

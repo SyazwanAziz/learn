@@ -13,6 +13,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   String userType;
+
   int selectedRadio;
   void initState() {
     super.initState();

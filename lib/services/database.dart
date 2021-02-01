@@ -10,8 +10,8 @@ class DatabaseService {
   final CollectionReference accountCollection =
       FirebaseFirestore.instance.collection('User');
 
-  Future updateUserData(
-      String name, String phoneNum, String address, String location,
+  Future updateUserData(String name, String phoneNum, String address,
+      String location, String photoURL,
       {String userType}) async {
     var data;
 
@@ -20,6 +20,7 @@ class DatabaseService {
       'phoneNum': phoneNum,
       'address': address,
       'location': location,
+      'photoURL': photoURL,
       'userType': userType,
     };
 
@@ -28,6 +29,7 @@ class DatabaseService {
       'phoneNum': phoneNum,
       'address': address,
       'location': location,
+      'photoURL': photoURL,
     };
 
     if (userType != null) {
@@ -47,6 +49,7 @@ class DatabaseService {
         phoneNum: doc.data()['phoneNum'] ?? '',
         address: doc.data()['address'] ?? '',
         location: doc.data()['location'] ?? '',
+        photoURL: doc.data()['photoURL'] ?? '',
       );
     }).toList();
   }
@@ -67,6 +70,7 @@ class DatabaseService {
       phoneNum: snapshot.data()['phoneNum'],
       address: snapshot.data()['address'],
       location: snapshot.data()['location'],
+      photoURL: snapshot.data()['photoURL'],
     );
   }
 }

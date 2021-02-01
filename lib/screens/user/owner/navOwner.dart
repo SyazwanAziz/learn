@@ -1,27 +1,28 @@
 import 'package:flutter/services.dart';
-import 'package:learn/screens/customer/accountUpdate.dart';
-import 'package:learn/screens/customer/historyCust.dart';
-import 'package:learn/screens/customer/homeCust.dart';
+import 'package:learn/screens/user/accDetail.dart';
+import 'package:learn/screens/user/accountUpdate.dart';
+import 'package:learn/screens/user/owner/historyOwner.dart';
+import 'package:learn/screens/user/owner/homeOwner.dart';
 import 'package:learn/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:learn/model/update.dart';
-import 'package:learn/screens/customer/accCust.dart';
+
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-class Home extends StatefulWidget {
+class NavOwner extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _NavOwnerState createState() => _NavOwnerState();
 }
 
-class _HomeState extends State<Home> {
+class _NavOwnerState extends State<NavOwner> {
   int _selectedIndex = 0;
   String qrCode = 'Unknown';
   List<Widget> _widgetOptions = <Widget>[
-    AccountCust(),
-    HomeCust(),
-    HistoryCust(),
+    AccountDetail(),
+    HomeOwner(),
+    HistoryOwner(),
   ];
 
   void _onItemTap(int index) {
@@ -65,32 +66,33 @@ class _HomeState extends State<Home> {
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
           endDrawer: Drawer(
+              elevation: 5.0,
               child: ListView(children: <Widget>[
-            ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('Edit account info'),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AccUpd()));
-                }),
-            ListTile(
-              leading: Icon(Icons.design_services),
-              title: Text('Edit service'),
-              onTap: null,
-            ),
-            ListTile(
-              leading: Icon(Icons.qr_code_scanner),
-              title: Text('Scan QR Code'),
-              onTap: () => scanQRCode(),
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () async {
-                await _auth.signOut();
-              },
-            ),
-          ])),
+                ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text('Edit account info'),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => AccUpd()));
+                    }),
+                ListTile(
+                  leading: Icon(Icons.design_services),
+                  title: Text('Edit service'),
+                  onTap: null,
+                ),
+                ListTile(
+                  leading: Icon(Icons.qr_code_scanner),
+                  title: Text('Scan QR Code'),
+                  onTap: () => scanQRCode(),
+                ),
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Logout'),
+                  onTap: () async {
+                    await _auth.signOut();
+                  },
+                ),
+              ])),
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class HomeCust extends StatelessWidget {
+class AccountDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('This home for customer page'),
+      child: Text('This account for customer and owner page'),
     );
   }
 }
