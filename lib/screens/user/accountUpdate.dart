@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -18,12 +20,11 @@ class _AccUpdState extends State<AccUpd> {
   int selectedRadio;
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  PickedFile _imageFile;
+  var _imageFile;
   String _name;
   String _phoneNum;
   String _address;
   String _location;
-  String _photoURL;
   double latitude;
   double longitude;
 
@@ -85,7 +86,7 @@ class _AccUpdState extends State<AccUpd> {
   void takePhoto(ImageSource source) async {
     final pickedFIle = await _picker.getImage(source: source);
     setState(() {
-      _imageFile = pickedFIle;
+      _imageFile = File(pickedFIle.path);
     });
   }
 
@@ -182,27 +183,35 @@ class _AccUpdState extends State<AccUpd> {
                               ),
                               SizedBox(height: 20.0),
                               RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    side: BorderSide(color: Colors.red)),
-                                color: Colors.red[800],
-                                child: Text(
-                                  'Update',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                onPressed: () async {
-                                  if (_formKey.currentState.validate()) {
-                                    await DatabaseService(uid: user.uid)
-                                        .updateUserData(
-                                            _name ?? userData.name,
-                                            _phoneNum ?? userData.phoneNum,
-                                            _address ?? userData.address,
-                                            _location ?? userData.location,
-                                            _photoURL ?? userData.photoURL);
-                                    Navigator.pop(context);
-                                  }
-                                },
-                              )
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      side: BorderSide(color: Colors.red)),
+                                  color: Colors.red[800],
+                                  child: Text(
+                                    'Update',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () async {
+                                    if (_formKey.currentState.validate()) {
+                                      final i = new Random(999999);
+                                      final ref = FirebaseStorage.instance
+                                          .ref()
+                                          .child('image$i');
+                                      await ref.putFile(_imageFile);
+                                      await ref
+                                          .getDownloadURL()
+                                          .then((value) async {
+                                        await DatabaseService(uid: user.uid)
+                                            .updateUserData(
+                                                _name ?? userData.name,
+                                                _phoneNum ?? userData.phoneNum,
+                                                _address ?? userData.address,
+                                                _location ?? userData.location,
+                                                value ?? userData.photoURL);
+                                        Navigator.pop(context);
+                                      });
+                                    }
+                                  })
                             ],
                           ),
                         ))));
@@ -211,6 +220,4 @@ class _AccUpdState extends State<AccUpd> {
           }
         });
   }
-
-  String buildString(String val) => val.toString();
 }

@@ -3,7 +3,7 @@ import 'package:learn/model/update.dart';
 import 'package:learn/model/user.dart';
 
 class ShopTile extends StatelessWidget {
-  final UpdAcc shop;
+  final UserData shop;
   ShopTile({this.shop});
 
   @override

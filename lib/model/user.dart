@@ -11,6 +11,7 @@ class UserData {
   String address;
   String location;
   String photoURL;
+  String userType;
 
   UserData(
       {this.uid,
@@ -18,11 +19,6 @@ class UserData {
       this.phoneNum,
       this.address,
       this.location,
-      this.photoURL});
-}
-
-class UserType {
-  String userType;
-
-  UserType({this.userType});
+      this.photoURL,
+      this.userType});
 }
