@@ -193,10 +193,11 @@ class _AccUpdState extends State<AccUpd> {
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState.validate()) {
-                                      final i = new Random(999999);
+                                      Random i = new Random();
+                                      int j = i.nextInt(10000);
                                       final ref = FirebaseStorage.instance
                                           .ref()
-                                          .child('image$i');
+                                          .child('image$j');
                                       await ref.putFile(_imageFile);
                                       await ref
                                           .getDownloadURL()
