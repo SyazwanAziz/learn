@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:learn/screens/user/accDetail.dart';
 import 'package:learn/screens/user/accountUpdate.dart';
+import 'package:learn/screens/user/owner/addService.dart';
+import 'package:learn/screens/user/owner/editService.dart';
 import 'package:learn/screens/user/owner/historyOwner.dart';
 import 'package:learn/screens/user/owner/homeOwner.dart';
 import 'package:learn/services/auth.dart';
@@ -59,7 +61,7 @@ class _NavOwnerState extends State<NavOwner> {
           appBar: AppBar(
             backgroundColor: Colors.red,
             centerTitle: true,
-            title: Text('MyBooking'),
+            title: Text('MyBooking Owner'),
             leading: Container(),
           ),
           body: Center(
@@ -78,7 +80,10 @@ class _NavOwnerState extends State<NavOwner> {
                 ListTile(
                   leading: Icon(Icons.design_services),
                   title: Text('Edit service'),
-                  onTap: null,
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => EditService()));
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.qr_code_scanner),

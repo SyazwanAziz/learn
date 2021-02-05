@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:learn/model/update.dart';
 import 'package:learn/model/user.dart';
 
@@ -39,6 +40,14 @@ class DatabaseService {
     }
 
     return await accountCollection.doc(uid).set(data);
+  }
+
+  Future addService(String service, String desc, String price) async {
+    await accountCollection.doc(uid).collection('service').add({
+      'service': service,
+      'desc': desc,
+      'price': price,
+    });
   }
 
   //user list form snapshot
