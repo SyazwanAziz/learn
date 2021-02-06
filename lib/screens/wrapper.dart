@@ -5,7 +5,6 @@ import 'package:learn/model/user.dart';
 import 'package:learn/screens/authenticate/authenticate.dart';
 import 'package:learn/screens/user/customer/navCust.dart';
 import 'package:learn/screens/user/owner/navOwner.dart';
-import 'package:learn/services/auth.dart';
 import 'package:learn/services/database.dart';
 import 'package:learn/shared/loading.dart';
 import 'package:provider/provider.dart';

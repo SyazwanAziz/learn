@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:learn/model/service.dart';
+import 'package:learn/model/serviceData.dart';
 import 'package:learn/model/update.dart';
 import 'package:learn/model/user.dart';
 
@@ -80,6 +82,32 @@ class DatabaseService {
       address: snapshot.data()['address'],
       location: snapshot.data()['location'],
       photoURL: snapshot.data()['photoURL'],
+    );
+  }
+
+  Stream<List<Service>> get service {
+    return accountCollection.snapshots().map(_userListFromSnapshots);
+  }
+
+  List<Service> _userListFromSnapshots(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Service(
+          service: doc.data()['service'] ?? '',
+          description: doc.data()['description'] ?? '',
+          price: doc.data()['price'] ?? '');
+    }).toList();
+  }
+
+  Stream<ServiceData> get serviceData {
+    return accountCollection.doc(uid).snapshots().map(_userDataFromSnapshots);
+  }
+
+  ServiceData _userDataFromSnapshots(DocumentSnapshot snapshot) {
+    return ServiceData(
+      uid: uid,
+      service: snapshot.data()['service'],
+      description: snapshot.data()['description'],
+      price: snapshot.data()['price'],
     );
   }
 }

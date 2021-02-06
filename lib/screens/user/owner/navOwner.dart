@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:learn/screens/user/accDetail.dart';
 import 'package:learn/screens/user/accountUpdate.dart';
 import 'package:learn/screens/user/owner/addService.dart';
-import 'package:learn/screens/user/owner/editService.dart';
 import 'package:learn/screens/user/owner/historyOwner.dart';
 import 'package:learn/screens/user/owner/homeOwner.dart';
 import 'package:learn/services/auth.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:learn/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:learn/model/update.dart';
-
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class NavOwner extends StatefulWidget {
@@ -79,10 +77,10 @@ class _NavOwnerState extends State<NavOwner> {
                     }),
                 ListTile(
                   leading: Icon(Icons.design_services),
-                  title: Text('Edit service'),
+                  title: Text('Add service'),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EditService()));
+                        MaterialPageRoute(builder: (context) => AddService()));
                   },
                 ),
                 ListTile(
